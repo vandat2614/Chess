@@ -1,15 +1,13 @@
 import pygame, sys
 from color import Colors
-from board import Board
+from game import Game
 
 screen = pygame.display.set_mode(size=(900, 700))
 pygame.display.set_caption('Chess')
 clock = pygame.time.Clock()
 
-cell_size = 60
 
-board = Board(cell_size)
-
+game = Game()
 
 while True:
     for event in pygame.event.get():
@@ -18,7 +16,10 @@ while True:
             sys.exit()
     
     screen.fill(Colors.SILVER)
-    board.draw(screen)
+    game.draw(screen)
     
+    if game.is_pressed():
+        print('Ok')
+
     pygame.display.update()
     clock.tick(60)
