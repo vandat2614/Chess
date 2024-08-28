@@ -17,9 +17,9 @@ while True:
     
     screen.fill(Colors.SILVER)
     game.draw(screen)
-    
+
     if game.is_pressed():
-        print('Ok')
+        pass
 
     pygame.display.update()
     clock.tick(60)

@@ -1,45 +1,52 @@
 from grid import Grid
 import pygame
+from color import Colors
+from pieces import *
+
+cell_size = 60
 
 class Game:
+    pieces = dict(zip(range(1, 13), [BlackKing, BlackQueen, BlackRook, BlackKnight, BlackBishop, BlackPawn, WhiteKing, WhiteQueen, WhiteRook, WhiteKnight, WhiteBishop, WhitePawn]))
+
     def __init__(self):
         self.grid = Grid()
-        self.current_cell = None
-
         self.pressed = False
-        self.pressed_cell = None
-        self.valid_options = None
-        
-    def get_pos(self):
-        return pygame.mouse.get_pos()
 
     def draw(self, screen):
-        self.grid.draw(screen)
+        for num in range(64):
+            row, col = num//8, num%8
+            
+            cell_color = [Colors.SILVER, Colors.WHITE][(row+col)%2]
+            cell_rect = pygame.Rect(col * cell_size, row * cell_size, cell_size, cell_size)
+            pygame.draw.rect(screen, cell_color, cell_rect)
 
-    def get_valid_piece_options(self, cell):
-        return [(cell[0]-1, cell[1]), (cell[0]-2, cell[1])]
-
-    def get_pressed_cell(self, mouse_pos):
-        row = mouse_pos[1] // 60
-        col = mouse_pos[0] // 60
-        return (row, col)
+            id = self.grid[row][col]
+            if id > 0: 
+                self.pieces[id].draw(screen, cell_rect)
 
     def is_pressed(self):
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()[0]
 
-        if (0 <= mouse_pos[0] <= 480) and (0 <= mouse_pos[1] <= 480):
+        if Game.in_game(mouse_pos):
             if mouse_pressed and not self.pressed:
                 self.pressed = True
-                self.pressed_cell = self.get_pressed_cell(mouse_pos)
-                self.valid_options = self.get_valid_piece_options(self.pressed_cell)
-
-                for (row, col) in self.valid_options:
-                    self.grid[row][col] = -1
-
+                self.pressed_cell = Game.get_pressed_cell(mouse_pos)
+                print(self.pressed_cell)
                 return True
-
+    
         if not mouse_pressed:
             self.pressed = False 
-
         return False 
+
+    @classmethod
+    def get_pressed_cell(cls, mouse_pos):
+        row = mouse_pos[1] // cell_size
+        col = mouse_pos[0] // cell_size
+        return (row, col)
+    
+    @classmethod
+    def in_game(cls, mouse_pos):
+        if (0 <= mouse_pos[0] < 480) and (0 <= mouse_pos[1] < 480): 
+            return True
+        return False
