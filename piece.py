@@ -14,6 +14,10 @@ def scale_image(image, scale_factor=1):
 
     return pygame.transform.smoothscale(image, (new_width, new_height))
 
+def valid_position(position):
+    if (0 <= position[0] <= 7) and (0 <= position[1] <= 7):
+        return True
+    return False
 
 class Chess:
     image = None
@@ -40,3 +44,9 @@ class Chess:
     @classmethod
     def valid_positions(cls, position, grid):
         pass
+
+    @classmethod
+    def is_opponent(cls, id1, id2):
+        if (Chess.WHITE_KING <= min(id1, id2) <= Chess.WHITE_PAWN) and (Chess.BLACK_KING <= max(id1, id2) <= Chess.BLACK_PAWN):
+            return True
+        return False

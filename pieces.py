@@ -1,5 +1,4 @@
-from piece import Chess, read_image
-from grid import Grid
+from piece import Chess, read_image, valid_position
 
 class BlackKing(Chess):
     image = read_image('Images\\black_king.png')
@@ -9,9 +8,9 @@ class BlackKing(Chess):
         actions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         new_positions = []
         for action in actions:
-            new_position = (position[0] + action[0], position[1] + action[1])
-            if Grid.valid_position(new_position[0], new_position[1]) and not (7 <= grid[new_position[0]][new_position[1]] <= 12):
-                new_positions.append(new_position)
+            new_pos = (position[0] + action[0], position[1] + action[1])
+            if valid_position(new_pos) and not (Chess.BLACK_KING <= grid[new_pos[0]][new_pos[1]] <= Chess.BLACK_PAWN):
+                new_positions.append(new_pos)
         return new_positions
 
 class BlackQueen(Chess):
@@ -31,53 +30,49 @@ class BlackRook(Chess):
 
         # <-
         for dis in range(1, 8):
-            new_position = (position[0], position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0], position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
         
         # ->
         for dis in range(1, 8):
-            new_position = (position[0], position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0], position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1])
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0] - dis, position[1])
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1])
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0] + dis, position[1])
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         return new_positions
-        
-                        
-
-
 
 class BlackKnight(Chess):
     image = read_image('Images\\black_knight.png')
@@ -87,9 +82,9 @@ class BlackKnight(Chess):
         actions = [(-2, -1), (-2, 1), (2, 1), (2, -1), (-1, -2), (-1, 2), (1, 2), (1, -2)]
         new_positions = []
         for action in actions:
-            new_position = (position[0] + action[0], position[1] + action[1])
-            if Grid.valid_position(new_position[0], new_position[1]) and not (7 <= grid[new_position[0]][new_position[1]] <= 12):
-                new_positions.append(new_position)
+            new_pos = (position[0] + action[0], position[1] + action[1])
+            if valid_position(new_pos) and not (Chess.BLACK_KING <= grid[new_pos[0]][new_pos[1]] <= Chess.BLACK_PAWN):
+                new_positions.append(new_pos)
         return new_positions
 
 class BlackBishop(Chess):
@@ -101,44 +96,44 @@ class BlackBishop(Chess):
 
         # left up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0] - dis, position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
         
         # right up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos =(position[0] - dis, position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # right down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0] + dis, position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # left down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (7 <= value <= 12):
-                    new_positions.append(new_position)
+            new_pos = (position[0] + dis, position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.BLACK_KING <= value <= Chess.BLACK_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
@@ -159,10 +154,10 @@ class BlackPawn(Chess):
             if position[0] == 6 and grid[position[0] - 2][position[1]] == 0:
                 new_positions.append((position[0] - 2, position[1]))
 
-        if Grid.valid_position(position[0] - 1, position[1] - 1) and (1 <= grid[position[0] - 1][position[1] - 1] <= 6):
+        if valid_position((position[0] - 1, position[1] - 1)) and (1 <= grid[position[0] - 1][position[1] - 1] <= 6):
             new_positions.append((position[0] - 1, position[1] - 1))
         
-        if Grid.valid_position(position[0] - 1, position[1] + 1) and (1 <= grid[position[0] - 1][position[1] + 1] <= 6):
+        if valid_position((position[0] - 1, position[1] + 1)) and (1 <= grid[position[0] - 1][position[1] + 1] <= 6):
             new_positions.append((position[0] - 1, position[1] + 1))
 
         return new_positions
@@ -175,9 +170,9 @@ class WhiteKing(Chess):
         actions = [(-1, -1), (-1, 0), (-1, 1), (0, -1), (0, 1), (1, -1), (1, 0), (1, 1)]
         new_positions = []
         for action in actions:
-            new_position = (position[0] + action[0], position[1] + action[1])
-            if Grid.valid_position(new_position[0], new_position[1]) and not (1 <= grid[new_position[0]][new_position[1]] <= 6):
-                new_positions.append(new_position)
+            new_pos = (position[0] + action[0], position[1] + action[1])
+            if valid_position(new_pos) and not (Chess.WHITE_KING <= grid[new_pos[0]][new_pos[1]] <= Chess.WHITE_PAWN):
+                new_positions.append(new_pos)
         return new_positions
 
 
@@ -198,44 +193,44 @@ class WhiteRook(Chess):
 
         # <-
         for dis in range(1, 8):
-            new_position = (position[0], position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos = (position[0], position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
         
         # ->
         for dis in range(1, 8):
-            new_position = (position[0], position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos = (position[0], position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1])
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos = (position[0] - dis, position[1])
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1])
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos = (position[0] + dis, position[1])
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
@@ -250,9 +245,9 @@ class WhiteKnight(Chess):
         actions = [(-2, -1), (-2, 1), (2, 1), (2, -1), (-1, -2), (-1, 2), (1, 2), (1, -2)]
         new_positions = []
         for action in actions:
-            new_position = (position[0] + action[0], position[1] + action[1])
-            if Grid.valid_position(new_position[0], new_position[1]) and not (1 <= grid[new_position[0]][new_position[1]] <= 6):
-                new_positions.append(new_position)
+            new_pos = (position[0] + action[0], position[1] + action[1])
+            if valid_position(new_pos) and not (Chess.WHITE_KING <= grid[new_pos[0]][new_pos[1]] <= Chess.WHITE_PAWN):
+                new_positions.append(new_pos)
         return new_positions
     
 class WhiteBishop(Chess):
@@ -264,44 +259,44 @@ class WhiteBishop(Chess):
 
         # left up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos(position[0] - dis, position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
         
         # right up
         for dis in range(1, 8):
-            new_position = (position[0] - dis, position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos(position[0] - dis, position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # right down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1] + dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos =(position[0] + dis, position[1] + dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
 
         # left down
         for dis in range(1, 8):
-            new_position = (position[0] + dis, position[1] - dis)
-            if Grid.valid_position(new_position[0], new_position[1]):
-                value = grid[new_position[0]][new_position[1]]
-                if not (1 <= value <= 6):
-                    new_positions.append(new_position)
+            new_pos =(position[0] + dis, position[1] - dis)
+            if valid_position(new_pos):
+                value = grid[new_pos[0]][new_pos[1]]
+                if not (Chess.WHITE_KING <= value <= Chess.WHITE_PAWN):
+                    new_positions.append(new_pos)
                 if value != 0:
                     break
             else: break
@@ -322,10 +317,10 @@ class WhitePawn(Chess):
                 moves.append((position[0] + 2, position[1]))
 
 
-        if Grid.valid_position(position[0] + 1, position[1] - 1) and (7 <= grid[position[0] + 1][position[1] - 1] <= 12):
+        if valid_position((position[0] + 1, position[1] - 1)) and (7 <= grid[position[0] + 1][position[1] - 1] <= 12):
             moves.append((position[0] + 1, position[1] - 1))
         
-        if Grid.valid_position(position[0] + 1, position[1] + 1) and (7 <= grid[position[0] + 1][position[1] + 1] <= 12):
+        if valid_position((position[0] + 1, position[1] + 1)) and (7 <= grid[position[0] + 1][position[1] + 1] <= 12):
             moves.append((position[0] + 1, position[1] + 1))
 
         return moves
