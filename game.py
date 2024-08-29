@@ -1,5 +1,6 @@
 from grid import Grid
 import pygame
+from piece import Chess
 
 cell_size = 60
 
@@ -10,11 +11,12 @@ class Game:
         self.pressed = False
 
         self.current_cell = None
+        self.turn = Chess.WHITE
 
     def draw(self, screen):
         self.grid.draw(screen)
 
-        if self.current_cell != None:
+        if self.current_cell != None and self.turn == Chess.type(self.grid[self.current_cell[0]][self.current_cell[1]]):
             self.grid.draw_suggests(screen, self.current_cell)
 
     def is_pressed(self):
@@ -34,10 +36,12 @@ class Game:
                 elif not self.grid.valid_move(self.current_cell, pressed_cell):
                     self.current_cell = pressed_cell
                 else:
-                    self.grid.move(self.current_cell, pressed_cell)
-                    self.current_cell = None
-                
-    
+                    current_id = self.grid[self.current_cell[0]][self.current_cell[1]]
+                    if Chess.type(current_id) == self.turn:
+                        self.grid.move(self.current_cell, pressed_cell)
+                        self.current_cell = None
+                        self.change_turn()
+
         if not mouse_pressed:
             self.pressed = False 
 
@@ -53,3 +57,5 @@ class Game:
             return True
         return False
 
+    def change_turn(self):
+        self.turn = 1 - self.turn

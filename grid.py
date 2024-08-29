@@ -50,9 +50,11 @@ class Grid:
         old_id = self.grid[old_pos[0]][old_pos[1]]
         if old_id == 0:
             return False
+        
         valid_positions = Grid.pieces[old_id].valid_positions(old_pos, self.grid)
         if new_pos in valid_positions:
             return True
+        
         return False
 
     def move(self, old_pos, new_pos):

@@ -21,6 +21,10 @@ def valid_position(position):
 
 class Chess:
     image = None
+
+    EMPTY = -1
+    WHITE = 0
+    BLACK = 1
     
     BLACK_KING = 7
     BLACK_QUEEN = 8
@@ -50,3 +54,11 @@ class Chess:
         if (Chess.WHITE_KING <= min(id1, id2) <= Chess.WHITE_PAWN) and (Chess.BLACK_KING <= max(id1, id2) <= Chess.BLACK_PAWN):
             return True
         return False
+    
+    @classmethod
+    def type(cls, id):
+        if Chess.BLACK_KING <= id <= Chess.BLACK_PAWN:
+            return Chess.BLACK
+        if Chess.WHITE_KING <= id <= Chess.WHITE_PAWN:
+            return Chess.WHITE
+        return Chess.EMPTY
