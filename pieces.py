@@ -140,27 +140,28 @@ class BlackBishop(Chess):
 
         return new_positions
         
-
 class BlackPawn(Chess):
     image = read_image('Images\\black_pawn.png')
 
     @classmethod
     def valid_positions(cls, position, grid):
-        new_positions = []
+        moves = []
 
-        if grid[position[0]-1][position[1]] == 0:
-            new_positions.append((position[0] - 1, position[1]))
+        if grid[position[0] + 1][position[1]] == 0:
+            moves.append((position[0] + 1, position[1]))
+            
+            if position[0] == 1 and grid[position[0] + 2][position[1]] == 0:
+                moves.append((position[0] + 2, position[1]))
 
-            if position[0] == 6 and grid[position[0] - 2][position[1]] == 0:
-                new_positions.append((position[0] - 2, position[1]))
 
-        if valid_position((position[0] - 1, position[1] - 1)) and  Chess.type(grid[position[0] - 1][position[1] - 1]) == Chess.WHITE:
-            new_positions.append((position[0] - 1, position[1] - 1))
+        if valid_position((position[0] + 1, position[1] - 1)) and Chess.type(grid[position[0] + 1][position[1] - 1]) == Chess.WHITE:
+            moves.append((position[0] + 1, position[1] - 1))
         
-        if valid_position((position[0] - 1, position[1] + 1)) and Chess.type(grid[position[0] - 1][position[1] + 1]) == Chess.WHITE:
-            new_positions.append((position[0] - 1, position[1] + 1))
+        if valid_position((position[0] + 1, position[1] + 1)) and Chess.type(grid[position[0] + 1][position[1] + 1]) == Chess.WHITE:
+            moves.append((position[0] + 1, position[1] + 1))
 
-        return new_positions
+        return moves
+
 
 class WhiteKing(Chess):
     image = read_image('Images\\white_king.png')
@@ -303,24 +304,25 @@ class WhiteBishop(Chess):
 
         return new_positions
 
+
+    
 class WhitePawn(Chess):
     image = read_image('Images\\white_pawn.png')
 
     @classmethod
     def valid_positions(cls, position, grid):
-        moves = []
+        new_positions = []
 
-        if grid[position[0] + 1][position[1]] == 0:
-            moves.append((position[0] + 1, position[1]))
-            
-            if position[0] == 1 and grid[position[0] + 2][position[1]] == 0:
-                moves.append((position[0] + 2, position[1]))
+        if grid[position[0]-1][position[1]] == 0:
+            new_positions.append((position[0] - 1, position[1]))
 
+            if position[0] == 6 and grid[position[0] - 2][position[1]] == 0:
+                new_positions.append((position[0] - 2, position[1]))
 
-        if valid_position((position[0] + 1, position[1] - 1)) and Chess.type(grid[position[0] + 1][position[1] - 1]) == Chess.BLACK:
-            moves.append((position[0] + 1, position[1] - 1))
+        if valid_position((position[0] - 1, position[1] - 1)) and  Chess.type(grid[position[0] - 1][position[1] - 1]) == Chess.BLACK:
+            new_positions.append((position[0] - 1, position[1] - 1))
         
-        if valid_position((position[0] + 1, position[1] + 1)) and Chess.type(grid[position[0] + 1][position[1] + 1]) == Chess.BLACK:
-            moves.append((position[0] + 1, position[1] + 1))
+        if valid_position((position[0] - 1, position[1] + 1)) and Chess.type(grid[position[0] - 1][position[1] + 1]) == Chess.BLACK:
+            new_positions.append((position[0] - 1, position[1] + 1))
 
-        return moves
+        return new_positions

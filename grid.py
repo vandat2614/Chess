@@ -11,17 +11,18 @@ class Grid:
 
     def reset(self):
         self.grid = [[0] * 8 for _ in range(8)]
-        self.grid[0] = [Chess.WHITE_ROOK, Chess.WHITE_KNIGHT, Chess.WHITE_BISHOP, Chess.WHITE_QUEEN, Chess.WHITE_KING, Chess.WHITE_BISHOP, Chess.WHITE_KNIGHT, Chess.WHITE_ROOK]
-        self.grid[1] = [Chess.WHITE_PAWN] * 8
+        self.grid[7] = [Chess.WHITE_ROOK, Chess.WHITE_KNIGHT, Chess.WHITE_BISHOP, Chess.WHITE_QUEEN, Chess.WHITE_KING, Chess.WHITE_BISHOP, Chess.WHITE_KNIGHT, Chess.WHITE_ROOK]
+        self.grid[6] = [Chess.WHITE_PAWN] * 8
 
-        self.grid[6] = [Chess.BLACK_PAWN] * 8
-        self.grid[7] = [Chess.BLACK_ROOK, Chess.BLACK_KNIGHT, Chess.BLACK_BISHOP, Chess.BLACK_QUEEN, Chess.BLACK_KING, Chess.BLACK_BISHOP, Chess.BLACK_KNIGHT, Chess.BLACK_ROOK] 
 
-    def draw(self, screen):
+        self.grid[1] = [Chess.BLACK_PAWN] * 8
+        self.grid[0] = [Chess.BLACK_ROOK, Chess.BLACK_KNIGHT, Chess.BLACK_BISHOP, Chess.BLACK_QUEEN, Chess.BLACK_KING, Chess.BLACK_BISHOP, Chess.BLACK_KNIGHT, Chess.BLACK_ROOK] 
+
+    def draw(self, screen, bg_colors):
         for num in range(64):
             row, col = num//8, num%8
             
-            cell_color = [Colors.SILVER, Colors.WHITE][(row+col)%2]
+            cell_color = bg_colors[(row+col)%2]
             cell_rect = pygame.Rect(col * self.cell_size, row * self.cell_size, self.cell_size, self.cell_size)
             pygame.draw.rect(screen, cell_color, cell_rect)
 
@@ -41,10 +42,10 @@ class Grid:
             next_id = self.grid[new_pos[0]][new_pos[1]]
             
             if Chess.is_opponent(current_id, next_id):
-                radius, width = 28, 5
-            else: radius, width = 10, 0
+                radius, width = 35, 5
+            else: radius, width = 15, 0
 
-            pygame.draw.circle(screen, Colors.SLATE_GRAY, (center_x, center_y), radius, width)
+            pygame.draw.circle(screen, (173,216,230), (center_x, center_y), radius, width)
 
     def valid_move(self, old_pos, new_pos):
         old_id = self.grid[old_pos[0]][old_pos[1]]
@@ -63,3 +64,18 @@ class Grid:
 
     def __getitem__(self, row):
         return self.grid[row]
+
+    def get_winner(self):
+        white_king_alive = False
+        black_king_alive = False
+
+        for cell in range(64):
+            row, col = cell//8, cell%8
+            white_king_alive += (self.grid[row][col] == Chess.WHITE_KING)
+            black_king_alive += (self.grid[row][col] == Chess.BLACK_KING)
+        
+        if not white_king_alive:
+            return Chess.BLACK
+        elif not black_king_alive:
+            return Chess.WHITE
+        else: return None
