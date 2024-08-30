@@ -72,12 +72,8 @@ class Game:
                     self.current_cell = pressed_cell
                 else:
                     current_id = self.grid[self.current_cell[0]][self.current_cell[1]]
-                    if Chess.type(current_id) == self.turn:
+                    if Chess.type(current_id) == self.turn and self.grid.is_safe_move(self.current_cell, pressed_cell):
                         self.grid.move(self.current_cell, pressed_cell)
-
-                        if not self.grid.is_safe(self.turn):
-                            print("NOO")
-
                         self.current_cell = None
                         self.turn = self.change_turn()
                         self.winner = self.grid.get_winner()

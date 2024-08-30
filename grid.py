@@ -112,22 +112,13 @@ class Grid:
         self.grid[new_pos[0]][new_pos[1]] = self.grid[old_pos[0]][old_pos[1]]
         self.grid[old_pos[0]][old_pos[1]] = Chess.EMPTY
     
-
     def __getitem__(self, row):
         return self.grid[row]
     
-    def is_live(self, type):
-        for cell in range(64):
-            row, col = cell//8, cell%8
-            id = self.grid[row][col]
-            if id == type:
-                return True
-        return False
-
     def get_winner(self):        
-        if self.get_king_position(Chess.WHITE) == None:
+        if not self.is_safe(Chess.WHITE):
             return Chess.BLACK        
-        elif self.get_king_position(Chess.BLACK) == None:
+        elif not self.is_safe(Chess.BLACK):
             return Chess.WHITE
         else: return None
 
