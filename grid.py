@@ -116,9 +116,9 @@ class Grid:
         return self.grid[row]
     
     def get_winner(self):        
-        if not self.is_safe(Chess.WHITE):
+        if not self.is_safe(Chess.WHITE) and not self.have_safe_move(Chess.WHITE):
             return Chess.BLACK        
-        elif not self.is_safe(Chess.BLACK):
+        elif not self.is_safe(Chess.BLACK) and not self.have_safe_move(Chess.BLACK):
             return Chess.WHITE
         else: return None
 
@@ -134,6 +134,17 @@ class Grid:
                 return (row, col)
             
         return None
+    
+    def have_safe_move(self, type):
+        king_pos = self.get_king_position(type)
+        id = self.grid[king_pos[0]][king_pos[1]]
+        valid_moves = Grid.pieces[id].valid_positions(king_pos, self.grid)
+
+        for move in valid_moves:
+            if self.is_safe_move(king_pos, move):
+                return True
+        
+        return False
     
     def is_safe(self, type):
         king_pos = self.get_king_position(type)
