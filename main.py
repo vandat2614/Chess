@@ -9,7 +9,6 @@ screen = pygame.display.set_mode(size=(8*cell_size, 8*cell_size))
 pygame.display.set_caption('Chess')
 clock = pygame.time.Clock()
 
-title_font = pygame.font.Font(None, 65)
 
 game = Game(cell_size)
 
@@ -29,14 +28,9 @@ while True:
 
     screen.fill(Colors.BLUE)
     game.draw(screen)
+
     if game.winner != None:
-        if game.winner == 0:
-            text = 'White player is the winner'
-        else: text = 'Black player is the winner'
-
-
-        text_surface = title_font.render(text, True, Colors.BLUE)
-        screen.blit(text_surface, (cell_size-35, 4*cell_size-23, 50, 50))
+        game.draw_winner_announce(screen)
     else: game.handle_pressed()
 
     # for r in range(2):

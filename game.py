@@ -2,18 +2,20 @@ from grid import Grid
 import pygame
 from pieces import *
 from theme import Theme
+from color import Colors
 
 class Game:
 
     def __init__(self, cell_size):
-        self.grid = Grid(cell_size)
-        self.pressed = False
         self.cell_size = cell_size
+        self.grid = Grid(cell_size)
 
+        self.pressed = False
         self.current_cell = None
+        self.winner = None
+
         self.turn = Chess.WHITE
         self.theme = 0
-        self.winner = None
 
     def reset(self):
         self.grid.reset()
@@ -26,10 +28,22 @@ class Game:
         self.grid.draw_board(screen, Theme.get_theme(self.theme))
 
         if self.grid.have_promotion():
-            self.grid.draw_promotion_select(screen, Theme.get_theme(3), 1-self.turn)
+            self.grid.draw_promotion_select(screen, Theme.get_theme(3), self.change_turn())
 
-        if self.current_cell != None and self.turn == Chess.type(self.grid[self.current_cell[0]][self.current_cell[1]]):
-            self.grid.draw_suggests(screen, self.current_cell)
+        if self.current_cell != None:
+            if self.turn == Chess.type(self.grid[self.current_cell[0]][self.current_cell[1]]):
+                self.grid.draw_suggests(screen, self.current_cell)
+    
+    def draw_winner_announce(self, screen):
+        if self.winner == Chess.BLACK:
+            winner = 'Black'
+        else: winner = 'White'
+
+        title_font = pygame.font.Font(None, 65)
+        text = f'{winner} player is the winner'
+        
+        text_surface = title_font.render(text, True, Colors.BLUE)
+        screen.blit(text_surface, (self.cell_size-35, 4*self.cell_size-23, 50, 50))
 
     def handle_pressed(self):
         mouse_pos = pygame.mouse.get_pos()
@@ -42,7 +56,7 @@ class Game:
                 pressed_cell = self.get_pressed_cell(mouse_pos)
                 value = self.grid[pressed_cell[0]][pressed_cell[1]]
 
-                if self.grid.have_promotion():
+                if self.grid.have_promotion() and self.winner == None:
                     if self.turn == Chess.BLACK:
                         promotions = [[Chess.WHITE_QUEEN, Chess.WHITE_ROOK], [Chess.WHITE_BISHOP, Chess.WHITE_KNIGHT]]
                     else: promotions = [[Chess.BLACK_QUEEN, Chess.BLACK_ROOK], [Chess.BLACK_BISHOP, Chess.BLACK_KNIGHT]]
@@ -60,11 +74,15 @@ class Game:
                     current_id = self.grid[self.current_cell[0]][self.current_cell[1]]
                     if Chess.type(current_id) == self.turn:
                         self.grid.move(self.current_cell, pressed_cell)
-                        self.current_cell = None
-                        self.change_turn()
-                        self.winner = self.grid.get_winner()
-                        print(self.winner)
 
+                        if not self.grid.is_safe(self.turn):
+                            print("NOO")
+
+                        self.current_cell = None
+                        self.turn = self.change_turn()
+                        self.winner = self.grid.get_winner()
+
+                
         if not mouse_pressed:
             self.pressed = False 
 
@@ -81,8 +99,10 @@ class Game:
         return False
 
     def change_turn(self):
-        self.turn = 1 - self.turn
-
+        if self.turn == Chess.BLACK:
+            return Chess.WHITE
+        return Chess.BLACK
+    
     def increase_theme(self):
         self.theme = (self.theme + 1) % Theme.num
 
