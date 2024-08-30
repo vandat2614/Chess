@@ -1,6 +1,6 @@
 from grid import Grid
 import pygame
-from piece import Chess
+from pieces import *
 from theme import Theme
 
 class Game:
@@ -23,7 +23,10 @@ class Game:
         self.winner = None
 
     def draw(self, screen):
-        self.grid.draw(screen, Theme.get_theme(self.theme))
+        self.grid.draw_board(screen, Theme.get_theme(self.theme))
+
+        if self.grid.have_promotion():
+            self.grid.draw_promotion_select(screen, Theme.get_theme(3), 1-self.turn)
 
         if self.current_cell != None and self.turn == Chess.type(self.grid[self.current_cell[0]][self.current_cell[1]]):
             self.grid.draw_suggests(screen, self.current_cell)
@@ -38,6 +41,15 @@ class Game:
 
                 pressed_cell = self.get_pressed_cell(mouse_pos)
                 value = self.grid[pressed_cell[0]][pressed_cell[1]]
+
+                if self.grid.have_promotion():
+                    if self.turn == Chess.BLACK:
+                        promotions = [[Chess.WHITE_QUEEN, Chess.WHITE_ROOK], [Chess.WHITE_BISHOP, Chess.WHITE_KNIGHT]]
+                    else: promotions = [[Chess.BLACK_QUEEN, Chess.BLACK_ROOK], [Chess.BLACK_BISHOP, Chess.BLACK_KNIGHT]]
+                    
+                    if 3 <= pressed_cell[0] <= 4 and 3 <= pressed_cell[1] <= 4:
+                        promotion_id = promotions[pressed_cell[0] - 3][pressed_cell[1] - 3]
+                        self.grid.promotion(promotion_id)
 
                 if self.current_cell == None:
                     if value != 0:

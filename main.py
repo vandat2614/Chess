@@ -39,6 +39,14 @@ while True:
         screen.blit(text_surface, (cell_size-35, 4*cell_size-23, 50, 50))
     else: game.handle_pressed()
 
+    # for r in range(2):
+    #     for c in range(2):
+    #         promotion_rect = pygame.Rect(cell_size*3 + cell_size * c, cell_size*3 + cell_size * r, cell_size , cell_size)
+    #         if (r+c)%2 == 0:
+    #             color = (255, 69, 0)
+    #         else: color = Colors.BLUE
+    #         pygame.draw.rect(screen, color, promotion_rect)
+
 
     pygame.display.update()
     clock.tick(60)

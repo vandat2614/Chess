@@ -18,7 +18,7 @@ class Grid:
         self.grid[1] = [Chess.BLACK_PAWN] * 8
         self.grid[0] = [Chess.BLACK_ROOK, Chess.BLACK_KNIGHT, Chess.BLACK_BISHOP, Chess.BLACK_QUEEN, Chess.BLACK_KING, Chess.BLACK_BISHOP, Chess.BLACK_KNIGHT, Chess.BLACK_ROOK] 
 
-    def draw(self, screen, bg_colors):
+    def draw_board(self, screen, bg_colors):
         for num in range(64):
             row, col = num//8, num%8
             
@@ -29,7 +29,35 @@ class Grid:
             id = self.grid[row][col]
             if id > 0: 
                 Grid.pieces[id].draw(screen, cell_rect)
+
+    def promotion(self, promotion_id):
+        for col in range(8):
+            if self.grid[0][col] == Chess.WHITE_PAWN:
+                self.grid[0][col] = promotion_id
+            if self.grid[7][col] == Chess.BLACK_PAWN:
+                self.grid[7][col] = promotion_id
+
+    def have_promotion(self):
+        for col in range(8):
+            if self.grid[0][col] == Chess.WHITE_PAWN or self.grid[7][col] == Chess.BLACK_PAWN:
+                return True
+        return False
+
+    def draw_promotion_select(self, screen, bg_colors, turn):
+        offset_x = offset_y = self.cell_size * 3
+
+        if turn == Chess.BLACK:
+            promotion_pieces = [BlackQueen, BlackRook, BlackBishop, BlackKnight]
+        else: promotion_pieces = [WhiteQueen, WhiteRook, WhiteBishop, WhiteKnight]
+
+        for cell in range(4):
+            row, col = cell//2, cell%2
+            cell_rect = pygame.Rect(offset_x + col * self.cell_size, offset_y + row * self.cell_size, self.cell_size, self.cell_size)
+            cell_color = bg_colors[(row+col)%2]
     
+            pygame.draw.rect(screen, cell_color, cell_rect)
+            promotion_pieces[cell].draw(screen, cell_rect)
+
     def draw_suggests(self, screen, position):
         current_id = self.grid[position[0]][position[1]]
         if current_id == 0:
