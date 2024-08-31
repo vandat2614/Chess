@@ -9,6 +9,8 @@ class Grid:
         self.cell_size = cell_size
         self.reset()
 
+        self.is_move = set([])
+
     def reset(self):
         self.grid = [[Chess.EMPTY] * 8 for _ in range(8)]
 
@@ -17,6 +19,8 @@ class Grid:
 
         self.grid[6] = [Chess.WHITE_PAWN] * 8
         self.grid[7] = [Chess.WHITE_ROOK, Chess.WHITE_KNIGHT, Chess.WHITE_BISHOP, Chess.WHITE_QUEEN, Chess.WHITE_KING, Chess.WHITE_BISHOP, Chess.WHITE_KNIGHT, Chess.WHITE_ROOK]
+
+        self.has_moved = set([])
 
     def draw_board(self, screen, bg_colors):
         for cell in range(64):
@@ -40,7 +44,7 @@ class Grid:
         suggests = Grid.pieces[current_id].valid_positions(position, self.grid)
 
         for new_pos in suggests:
-            if self.is_safe_move(position, new_pos):
+            if self.is_safe_move(position, new_pos) and self.valid_move(position, new_pos):
                 center_x = new_pos[1] * self.cell_size + self.cell_size//2
                 center_y = new_pos[0] * self.cell_size + self.cell_size//2
 
@@ -56,7 +60,7 @@ class Grid:
         old_id = self.grid[old_pos[0]][old_pos[1]]
         new_id = self.grid[new_pos[0]][new_pos[1]]
 
-        self.move(old_pos, new_pos)
+        self.move(old_pos, new_pos, True)
 
         safe = False
         if self.is_safe(Chess.type(old_id)):
@@ -96,6 +100,26 @@ class Grid:
             pygame.draw.rect(screen, cell_color, cell_rect)
             promotion_pieces[cell].draw(screen, cell_rect)
 
+    def valid_castling(self, old_pos, new_pos):
+        type = Chess.type(self.grid[old_pos[0]][old_pos[1]])
+        if old_pos in self.has_moved or not self.is_safe(type):
+            return False
+        
+        if new_pos[1] < old_pos[1]:
+            rook_pos = (old_pos[0], 0)
+        else: rook_pos = (old_pos[0], 7)
+
+        if rook_pos not in self.has_moved:
+            return True
+
+        return False
+        
+    def is_castling_move(self, old_pos, new_pos):
+        if (old_pos[0] == 0 and old_pos[1] == 4) or (old_pos[0] == 7 and old_pos[1] == 4):
+            if (new_pos[0] == old_pos[0] and abs(new_pos[1] - old_pos[1]) == 2):
+                return True
+        return False
+
     def valid_move(self, old_pos, new_pos):
         old_id = self.grid[old_pos[0]][old_pos[1]]
 
@@ -104,11 +128,31 @@ class Grid:
         
         valid_positions = Grid.pieces[old_id].valid_positions(old_pos, self.grid)
         if new_pos in valid_positions:
-            return True
+            if self.is_castling_move(old_pos, new_pos):
+                if self.valid_castling(old_pos, new_pos):
+                    return True
+                return False
+            else: return True
         
         return False
 
-    def move(self, old_pos, new_pos):
+    def move(self, old_pos, new_pos, is_test = False):
+        if not is_test:
+            self.has_moved.add(old_pos)
+
+        if self.is_castling_move(old_pos, new_pos) and not is_test:
+            if new_pos[1] < old_pos[1]:
+                old_rook_pos = (old_pos[0], 0)
+                new_rook_pos = (old_pos[0], new_pos[1] + 1)
+            else:
+                old_rook_pos = (old_pos[0], 7)
+                new_rook_pos = (old_pos[0], new_pos[1] - 1)
+
+            self.has_moved.add(old_rook_pos)
+
+            self.grid[new_rook_pos[0]][new_rook_pos[1]] = self.grid[old_rook_pos[0]][old_rook_pos[1]]
+            self.grid[old_rook_pos[0]][old_rook_pos[1]] = Chess.EMPTY
+
         self.grid[new_pos[0]][new_pos[1]] = self.grid[old_pos[0]][old_pos[1]]
         self.grid[old_pos[0]][old_pos[1]] = Chess.EMPTY
     

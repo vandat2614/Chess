@@ -11,6 +11,14 @@ class BlackKing(Chess):
             new_pos = (position[0] + action[0], position[1] + action[1])
             if valid_position(new_pos) and Chess.type(grid[new_pos[0]][new_pos[1]]) != Chess.BLACK:
                 new_positions.append(new_pos)
+
+        if (position[0] == 0 and position[1] == 4):
+            if grid[0][0] == Chess.BLACK_ROOK and grid[0][1] == grid[0][2] == grid[0][3] == 0:
+                new_positions.append((0, 2))
+
+            if grid[0][7] == Chess.BLACK_ROOK and grid[0][5] == grid[0][6] == 0:
+                new_positions.append((0, 6))
+
         return new_positions
 
 class BlackQueen(Chess):
@@ -174,6 +182,14 @@ class WhiteKing(Chess):
             new_pos = (position[0] + action[0], position[1] + action[1])
             if valid_position(new_pos) and Chess.type(grid[new_pos[0]][new_pos[1]]) != Chess.WHITE:
                 new_positions.append(new_pos)
+            
+        if (position[0] == 7 and position[1] == 4):
+            if grid[7][0] == Chess.WHITE_ROOK and grid[7][1] == grid[7][2] == grid[7][3] == 0:
+                new_positions.append((7, 2))
+            
+            if grid[7][7] == Chess.WHITE_ROOK and grid[7][5] == grid[7][6] == 0:
+                new_positions.append((7, 6))
+
         return new_positions
 
 
