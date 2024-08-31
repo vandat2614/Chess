@@ -4,7 +4,7 @@ from game import Game
 from button import Button
 
 pygame.init()
-cell_size = 60
+cell_size = 65
 
 screen = pygame.display.set_mode(size=(8*cell_size, 8*cell_size + 60))
 pygame.display.set_caption('Chess')

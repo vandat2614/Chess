@@ -55,7 +55,7 @@ class Grid:
                     radius, width = 35, 5
                 else: radius, width = 15, 0
 
-                pygame.draw.circle(screen, (173,216,230), (center_x, center_y), radius, width)
+                pygame.draw.circle(screen, (135, 206, 250), (center_x, center_y), radius, width)
 
     def is_safe_move(self, old_pos, new_pos):
         old_id = self.grid[old_pos[0]][old_pos[1]]

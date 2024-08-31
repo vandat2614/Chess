@@ -59,7 +59,7 @@ class Chess:
         return Chess.EMPTY
     
 
-def read_image(image_path, scale_factor=0.08):
+def read_image(image_path, scale_factor=0.1):
     origin_image = pygame.image.load(image_path)
     image = scale_image(origin_image, scale_factor)
     return image

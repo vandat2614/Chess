@@ -8,7 +8,7 @@ class Button:
 
     def config(self, text='', image_path=None, scale_factor=1):
         if image_path == None:
-            self.font = pygame.font.SysFont(None, 25)
+            self.font = pygame.font.SysFont(None, 27)
             self.surface = self.font.render(text, True, Colors.WHITE)
             self.surface_rect = self.surface.get_rect(center=self.rect.center) 
         else:

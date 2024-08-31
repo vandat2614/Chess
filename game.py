@@ -80,6 +80,7 @@ class Game:
 
             if Chess.type(current_id) == self.turn and self.grid.is_safe_move(self.current_cell, selected_cell):
                 self.save_game_state(self.backs)
+                self.forwards = []
                 self.grid.move(self.current_cell, selected_cell)
 
                 self.current_cell = None
