@@ -4,3 +4,4 @@ class Colors:
     SILVER = (192,192,192)
     SLATE_GRAY = (112, 128, 144)
     BLUE = (0, 74, 158)
+    LIGHT_BLUE = (92, 172, 238)

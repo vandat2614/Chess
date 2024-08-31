@@ -1,6 +1,7 @@
 from pieces import *
 from color import Colors
 import pygame
+from copy import deepcopy
 
 class Grid:
     pieces = dict(zip(range(1, 13), [WhiteKing, WhiteQueen, WhiteRook, WhiteKnight, WhiteBishop, WhitePawn, BlackKing, BlackQueen, BlackRook, BlackKnight, BlackBishop, BlackPawn]))
@@ -71,7 +72,7 @@ class Grid:
 
         return safe
 
-    def promotion(self, promotion_id):
+    def pawn_promotion(self, promotion_id):
         for col in range(8):
             if self.grid[0][col] == Chess.WHITE_PAWN:
                 self.grid[0][col] = promotion_id
@@ -205,4 +206,9 @@ class Grid:
                 return False
         
         return True
+
+    def copy(self):
+        new_grid = deepcopy(self)
+        new_grid.grid = deepcopy(self.grid)
+        return new_grid
 
